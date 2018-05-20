@@ -1,7 +1,7 @@
 # coding: utf-8
 import os
 import keras
-from config import config
+from util.aws_transferer.config import config
 
 
 class CheckPointTransferer(keras.callbacks.ModelCheckpoint):
@@ -14,7 +14,7 @@ class CheckPointTransferer(keras.callbacks.ModelCheckpoint):
     self.save_dir = save_dir
     self.name = name
 
-
+  #[TODO] fix os.system
   def on_epoch_end(self, epoch, logs={}):
     super(CheckPointTransferer, self).on_epoch_end(epoch, logs=logs)
     os.system("aws s3 cp " + self.file_path + " s3://" + config.BUCKET_NAME + self.save_dir + self.name + "/" +"epoch" + str(epoch) + ".h5")
