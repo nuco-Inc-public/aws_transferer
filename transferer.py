@@ -29,7 +29,7 @@ def send(text_file, dir_name):
   os.system("aws s3 cp ./util/aws_transferer/data/*.log s3://" + config.BUCKET_NAME + config.OUTPUT_DIR  + dir_name + "/" + config.MODELS)
   print("sent log data")
 
-  os.system("aws s3 cp ./util/aws_transferer/data/*.jpg s3://" + config.BUCKET_NAME + config.OUTPUT_DIR + dir_name + "/" +config.THOMBNAILS)
+  os.system("aws s3 cp ./util/aws_transferer/data/*.jpg s3://" + config.BUCKET_NAME + config.OUTPUT_DIR + dir_name + "/" +config.THUMBNAILS)
   print("sent thombnail data")
 
 
