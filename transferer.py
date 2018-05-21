@@ -22,12 +22,15 @@ def check(output_dir, dir_name):
 # TODO 評価のみの場合、.h5ファイルの存在チェック
 
 
-def send(text_file, output_dir, dir_name):
-  os.system("aws s3 cp " + text_file + " s3://" + config.BUCKET_NAME + output_dir + dir_name + "/")
+def send(text_file, dir_name):
+  os.system("aws s3 cp " + text_file + " s3://" + config.BUCKET_NAME + config.OUTPUT  + dir_name + "/" + config.MODELS)
   print("sent " + text_file)
 
-  os.system("aws s3 cp ./util/aws_transferer/data/*.log s3://" + config.BUCKET_NAME + output_dir + dir_name + "/")
+  os.system("aws s3 cp ./util/aws_transferer/data/*.log s3://" + config.BUCKET_NAME + config.OUTPUT  + dir_name + "/" + config.MODELS)
   print("sent log data")
+
+  os.system("aws s3 cp ./util/aws_transferer/data/*.jpg s3://" + config.BUCKET_NAME + config.OUTPUT_DIR + dir_name + config.THOMBNAILS)
+  print("sent thombnail data")
 
 
 def get_epoch_param(output_dir, dir_name, epoch):
