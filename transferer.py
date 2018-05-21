@@ -21,4 +21,6 @@ def check(output_dir, dir_name):
 def send(text_file, output_dir, dir_name):
   os.system("aws s3 cp " + text_file + " s3://" + config.BUCKET_NAME + output_dir + dir_name + "/")
   print("sent " + text_file)
-  
+
+  os.system("aws s3 cp ./util/aws_transferer/data/*.log s3://" + config.BUCKET_NAME + output_dir + dir_name + "/")
+  print("sent log data")
