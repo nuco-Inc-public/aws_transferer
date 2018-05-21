@@ -5,7 +5,7 @@ from util.aws_transferer.config import config
 from boto3.session import Session
 
 def init():
-  os.system("rm -r ./util/aws_transferer/data/*")
+  os.system("rm -r ./util/aws_transferer/data/*.h5")
 
 # TODO output/models変数化
 def check(output_dir, dir_name):
@@ -32,5 +32,5 @@ def send(text_file, output_dir, dir_name):
 
 def get_epoch_param(output_dir, dir_name, epoch):
   print("get epoch param from S3 ...")
-  os.system("aws s3 cp s3://" + config.BUCKET_NAME + output_dir + dir_name + "/epoch" + str(epoch - 1) + ".h5" + config.RECEIVE_DIR)
+  os.system("aws s3 cp s3://" + config.BUCKET_NAME + output_dir + dir_name + "/epoch" + str(epoch - 1) + ".h5" + config.RECIEVE_DIR)
 
