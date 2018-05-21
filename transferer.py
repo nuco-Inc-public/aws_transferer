@@ -35,8 +35,11 @@ def send(text_file, dir_name):
   os.system("aws s3 cp ./util/aws_transferer/data/*.log s3://" + config.BUCKET_NAME + config.OUTPUT_DIR  + dir_name + "/" + config.MODELS)
   print("sent log data")
 
-  os.system("aws s3 cp ./util/aws_transferer/data/*.jpg s3://" + config.BUCKET_NAME + config.OUTPUT_DIR + dir_name + "/" +config.THUMBNAILS)
-  print("sent thumbnail data")
+  os.system("aws s3 cp ./util/aws_transferer/data/grad_cam s3://" + config.BUCKET_NAME + config.OUTPUT_DIR + dir_name + "/" +config.THUMBNAILS + config.NORMAL)
+  print("sent grad cam data")
+
+  os.system("aws s3 cp ./util/aws_transferer/data/normal s3://" + config.BUCKET_NAME + config.OUTPUT_DIR + dir_name + "/" +config.THUMBNAILS + config.GRAD_CAM)
+  print("sent grad normal img data")
 
 
 def get_epoch_param(dir_name, epoch):
