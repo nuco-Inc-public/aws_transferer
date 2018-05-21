@@ -32,5 +32,5 @@ def send(text_file, output_dir, dir_name):
 
 def get_epoch_param(output_dir, dir_name, epoch):
   print("get epoch param from S3 ...")
-  os.system("aws s3 cp s3://" + config.BUCKET_NAME + output_dir + dir_name + "/epoch" + epoch + ".h5" + config.RECEIVE_DIR)
+  os.system("aws s3 cp s3://" + config.BUCKET_NAME + output_dir + dir_name + "/epoch" + str(epoch - 1) + ".h5" + config.RECEIVE_DIR)
 
