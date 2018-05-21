@@ -8,16 +8,22 @@ def init():
   os.system("rm -r ./util/aws_transferer/data/*.h5")
 
 # TODO output/models変数化
-def check(dir_name):
+def check(train, dir_name):
   print(config.BUCKET_NAME + config.OUTPUT_DIR + dir_name + config.MODELS)
   s3client = Session().client('s3')
   response = s3client.list_objects(
-    Bucket=config.BUCKET_NAME,
-    Prefix=config.OUTPUT_DIR + dir_name + '/'
-  )
-  if "Contents" in response:
-    print("S3上に指定のフォルダが既に存在してます。")
-    sys.exit(1)
+      Bucket=config.BUCKET_NAME,
+      Prefix=config.OUTPUT_DIR + dir_name + '/'
+    )
+  if train:
+    if "Contents" in response:
+      print("S3上に指定のフォルダが既に存在してます。")
+      sys.exit(1)
+  else:
+    if "Contents" not in response:
+      print("S3上に指定のフォルダが存在しません。")
+      sys.exit(1)
+
 
 # TODO 評価のみの場合、.h5ファイルの存在チェック
 
