@@ -27,15 +27,15 @@ def check(train, dir_name):
 
 # TODO 評価のみの場合、.h5ファイルの存在チェック
 
-
+# TODO evaluateの時はログを送らない（trainのlogを消さない） 
 def send(text_file, dir_name):
-  os.system("aws s3 cp " + text_file + " s3://" + config.BUCKET_NAME + config.OUTPUT_DIR  + dir_name + "/" + config.MODELS)
+  os.system("aws s3 cp " + text_file + " s3://" + config.BUCKET_NAME + '/' + config.OUTPUT_DIR  + dir_name + "/" + config.MODELS)
   print("sent " + text_file)
 
-  os.system("aws s3 cp ./util/aws_transferer/data/*.log s3://" + config.BUCKET_NAME + config.OUTPUT_DIR + dir_name + "/" + config.MODELS)
+  os.system("aws s3 cp ./util/aws_transferer/data/ s3://" + config.BUCKET_NAME + '/' + config.OUTPUT_DIR + dir_name + "/" + config.MODELS + " --exclude '*' --include '*.log' --recursive")
   print("sent log data")
 
-  os.system("aws s3 cp ./util/aws_transferer/data/ s3://" + config.BUCKET_NAME + config.OUTPUT_DIR + dir_name + "/" + config.THUMBNAILS +  " --exclude '*' --include '*.jpg' --recursive")
+  os.system("aws s3 cp ./util/aws_transferer/data/ s3://" + config.BUCKET_NAME + '/' + config.OUTPUT_DIR + dir_name + "/" + config.THUMBNAILS +  " --exclude '*' --include '*.jpg' --recursive")
   print("sent thumbnail data")
 
 
