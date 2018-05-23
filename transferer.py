@@ -32,9 +32,6 @@ def send(text_file, dir_name):
   os.system("aws s3 cp " + text_file + " s3://" + config.BUCKET_NAME + '/' + config.OUTPUT_DIR  + dir_name + "/" + config.MODELS)
   print("sent " + text_file)
 
-  os.system("aws s3 cp ./util/aws_transferer/data/ s3://" + config.BUCKET_NAME + '/' + config.OUTPUT_DIR + dir_name + "/" + config.MODELS + " --exclude '*' --include '*.log' --recursive")
-  print("sent log data")
-
   os.system("aws s3 cp ./util/aws_transferer/data/ s3://" + config.BUCKET_NAME + '/' + config.OUTPUT_DIR + dir_name + "/" + config.THUMBNAILS +  " --exclude '*' --include '*.jpg' --recursive")
   print("sent thumbnail data")
 
@@ -43,3 +40,9 @@ def get_epoch_param(dir_name, epoch):
   print("get epoch param from S3 ...")
   os.system("aws s3 cp s3://" + config.BUCKET_NAME + '/' + config.OUTPUT_DIR + dir_name + "/" + config.MODELS + "epoch" + str(epoch - 1) + ".h5 " + config.RECIEVE_DIR)
 
+
+def send_log(dir_name):
+   os.system("aws s3 cp ./util/aws_transferer/data/ s3://" + config.BUCKET_NAME + '/' + config.OUTPUT_DIR + dir_name + "/" + config.MODELS + " --exclude '*' --include '*.log' --recursive")
+   print("sent log data")
+  
+  
