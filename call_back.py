@@ -16,5 +16,5 @@ class CheckPointTransferer(keras.callbacks.ModelCheckpoint):
   #[TODO] fix os.system
   def on_epoch_end(self, epoch, logs={}):
     super(CheckPointTransferer, self).on_epoch_end(epoch, logs=logs)
-    os.system("aws s3 cp " + self.file_path + " s3://" + config.BUCKET_NAME + config.OUTPUT_DIR + self.name + "/" + config.MODELS + "epoch" + str(epoch) + ".h5")
+    os.system("aws s3 cp " + self.file_path + " s3://" + config.BUCKET_NAME + '/' + config.OUTPUT_DIR + self.name + "/" + config.MODELS + "epoch" + str(epoch) + ".h5")
     print("saved model")
