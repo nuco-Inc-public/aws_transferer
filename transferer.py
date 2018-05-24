@@ -1,48 +1,51 @@
 # coding: utf-8
 import os
 import sys
-from util.aws_transferer.config import config
-from boto3.session import Session
+import io
+from boto3.session import boto3, Session
+from enum import Enum
 
-def init():
-  os.system("rm -r ./util/aws_transferer/data/*.h5")
+class S3Manager():
 
-# TODO output/models変数化
-def check(train, dir_name):
-  print(config.BUCKET_NAME + config.OUTPUT_DIR + dir_name + config.MODELS)
-  s3client = Session().client('s3')
-  response = s3client.list_objects(
-      Bucket=config.BUCKET_NAME,
-      Prefix=config.OUTPUT_DIR + dir_name + '/'
+  class ContentType(Enum):
+    TEXT_PLAIN = 'text/plain'
+    BINARY = 'binary/octet-stream'
+    IMAGE = 'image/jpeg'
+
+
+  def __init__(self, bucket_name):
+    self.s3 = boto3.resource('s3')
+    self.bucket_name = bucket_name
+
+
+  def download(self, name, save_path):
+    o = self.s3.Object(self.bucket_name, name)
+    o.download_file(save_path)
+
+
+  def upload(self, content, name, content_type=ContentType.TEXT_PLAIN):
+    '''
+
+    Args:
+      content (bytes): 
+      name (str):
+
+
+    Return:
+      boolean
+    '''
+    obj = self.s3.Object(self.bucket_name, name)
+    response = obj.put(
+      ACL='public-read',
+      Body=content,
+      ContentType=content_type.value,
     )
-  if train:
-    if "Contents" in response:
-      print("S3上に指定のフォルダが既に存在してます。")
-      sys.exit(1)
-  else:
-    if "Contents" not in response:
-      print("S3上に指定のフォルダが存在しません。")
-      sys.exit(1)
 
 
-# TODO 評価のみの場合、.h5ファイルの存在チェック
-
-# TODO evaluateの時はログを送らない（trainのlogを消さない） 
-def send(text_file, dir_name):
-  os.system("aws s3 cp " + text_file + " s3://" + config.BUCKET_NAME + '/' + config.OUTPUT_DIR  + dir_name + "/" + config.MODELS)
-  print("sent " + text_file)
-
-  os.system("aws s3 cp ./util/aws_transferer/data/ s3://" + config.BUCKET_NAME + '/' + config.OUTPUT_DIR + dir_name + "/" + config.THUMBNAILS +  " --exclude '*' --include '*.jpg' --recursive")
-  print("sent thumbnail data")
-
-
-def get_epoch_param(dir_name, epoch):
-  print("get epoch param from S3 ...")
-  os.system("aws s3 cp s3://" + config.BUCKET_NAME + '/' + config.OUTPUT_DIR + dir_name + "/" + config.MODELS + "epoch" + str(epoch - 1) + ".h5 " + config.RECIEVE_DIR)
-
-
-def send_log(dir_name):
-   os.system("aws s3 cp ./util/aws_transferer/data/ s3://" + config.BUCKET_NAME + '/' + config.OUTPUT_DIR + dir_name + "/" + config.MODELS + " --exclude '*' --include '*.log' --recursive")
-   print("sent log data")
-  
-  
+  def exists(self, dir_name):
+    s3client = Session().client('s3')
+    response = s3client.list_objects(
+        Bucket=self.bucket_name,
+        Prefix= dir_name + '/'
+      )
+    return "Contents" in response
