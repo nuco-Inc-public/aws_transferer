@@ -14,7 +14,10 @@ class S3Manager():
 
 
   def __init__(self, bucket_name):
-    self.s3 = boto3.resource('s3')
+    session = Session(aws_access_key_id=os.environ['AWS_ACCESS_KEY'],
+                  aws_secret_access_key=os.environ['AWS_SECRET_KEY'])
+
+    self.s3 = session.resource('s3')
     self.bucket_name = bucket_name
 
 
@@ -43,7 +46,9 @@ class S3Manager():
 
 
   def exists(self, dir_name):
-    s3client = Session().client('s3')
+    s3client = Session(
+      aws_access_key_id=os.environ['AWS_ACCESS_KEY'],
+      aws_secret_access_key=os.environ['AWS_SECRET_KEY']).client('s3')
     response = s3client.list_objects(
         Bucket=self.bucket_name,
         Prefix= dir_name + '/'
