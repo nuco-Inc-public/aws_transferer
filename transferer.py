@@ -22,20 +22,27 @@ class S3Manager():
 
 
   def download(self, name, save_path):
+    '''
+      s3からファイルをダウンロードする
+      Args:
+          name(string): ファイル名
+          save_path(string): 保存先パス
+      Returns:
+          なし
+    '''
     o = self.s3.Object(self.bucket_name, name)
     o.download_file(save_path)
 
 
   def upload(self, content, name, content_type=ContentType.TEXT_PLAIN):
     '''
-
-    Args:
-      content (bytes): 
-      name (str):
-
-
-    Return:
-      boolean
+      s3にファイルをアップロードする
+      Args:
+          content:
+          name(string): ファイル名
+          content_type(): 
+      Returns:
+          なし
     '''
     obj = self.s3.Object(self.bucket_name, name)
     response = obj.put(
@@ -46,6 +53,13 @@ class S3Manager():
 
 
   def exists(self, dir_name):
+    '''
+      s3上に指定ディレクトリ階層が存在するかチェックする
+      Args:
+          dir_name(string): ファイル名
+      Returns:
+          boolean: 階層の存在有無
+    '''
     s3client = Session(
       aws_access_key_id=os.environ['AWS_ACCESS_KEY'],
       aws_secret_access_key=os.environ['AWS_SECRET_KEY']).client('s3')
