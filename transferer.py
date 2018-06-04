@@ -14,6 +14,13 @@ class S3Manager():
 
 
   def __init__(self, bucket_name):
+    '''
+      s3Managerのコンストラクタ
+      Args:
+          bucket_name(string): バケット名
+      Returns:
+          なし
+    '''
     session = Session(aws_access_key_id=os.environ['AWS_ACCESS_KEY'],
                   aws_secret_access_key=os.environ['AWS_SECRET_KEY'])
 
@@ -38,9 +45,9 @@ class S3Manager():
     '''
       s3にファイルをアップロードする
       Args:
-          content:
+          content: アップロードするコンテンツデータ
           name(string): ファイル名
-          content_type(): 
+          content_type(string): s3Managerのコンテンツ種別
       Returns:
           なし
     '''
@@ -56,7 +63,7 @@ class S3Manager():
     '''
       s3上に指定ディレクトリ階層が存在するかチェックする
       Args:
-          dir_name(string): ファイル名
+          dir_name(string): 
       Returns:
           boolean: 階層の存在有無
     '''
