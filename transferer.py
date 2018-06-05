@@ -21,12 +21,9 @@ class S3Manager():
       Returns:
           なし
     '''
-    a = os.environ.get('AWS_ACCESS_KEY')
-    s = os.environ.get('AWS_SECRET_KEY')
-    self.a_key = 'hoge' if a == None else os.environ['AWS_ACCESS_KEY']
-    self.s_key = 'fuga' if s == None else os.environ['AWS_SECRET_KEY']
-    session = Session(self.a_key, self.s_key)
-
+    self.a_key = os.environ.get('AWS_ACCESS_KEY')
+    self.s_key = os.environ.get('AWS_SECRET_KEY')
+    self session = Session(self.a_key, self.s_key) if self.a_key and self.s_key else Session()
     self.s3 = session.resource('s3')
     self.bucket_name = bucket_name
 
@@ -70,9 +67,7 @@ class S3Manager():
       Returns:
           boolean: 階層の存在有無
     '''
-    s3client = Session(
-      aws_access_key_id=self.a_key
-      ,aws_secret_access_key=self.s_key).client('s3')
+    s3client = self.session.client('s3')
     response = s3client.list_objects(
         Bucket=self.bucket_name,
         Prefix= dir_name + '/'
