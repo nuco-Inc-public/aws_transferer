@@ -21,8 +21,8 @@ class S3Manager():
       Returns:
           なし
     '''
-    self.a_key = os.environ.get('AWS_ACCESS_KEY')
-    self.s_key = os.environ.get('AWS_SECRET_KEY')
+    self.a_key = os.environ.get('AWS_ACCESS_KEY_ID')
+    self.s_key = os.environ.get('AWS_SECRET_ACCESS_KEY')
     self.session = Session(self.a_key, self.s_key) if self.a_key and self.s_key else Session()
     self.s3 = self.session.resource('s3')
     self.bucket_name = bucket_name
